@@ -1,0 +1,64 @@
+body {
+  background-image: linear-gradient(red, white);
+  height: 100vh;
+  margin: 0;
+}
+
+.container{
+  font-family: Arial, sans-serif;
+}
+
+/*Caja para seleccionar archivo*/
+.custom-file-upload {
+  display: inline-block;
+  background-color: #0f0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 20px;
+}
+
+.custom-file-upload:hover { /*para cuando pase el cursos por encima*/
+  background-color: #090;
+}
+
+#file-upload { /* para ocultar el selector de archivos nativo, si lo quitamos aparece el nombre del archivo que subamos y el botón genérico */
+  display: none;
+}
+/*Fin caja seleccionar archivo*/
+
+
+.input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.input-container label {
+  margin-right: 10px;
+}
+
+.input-container input {
+  width: 100px; 
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.submit-button {
+  background-color: #007bff; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3; 
+}
