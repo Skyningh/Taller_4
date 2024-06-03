@@ -27,10 +27,14 @@ export default function Home() {
     }
   };
 //me dio paja colocar lo del css (no tenia idea como)
+
   return (
     <div className="container">
       <h1>Conversor de imágenes bacano :D </h1>
-      <input type="file" accept="image/*" onChange={onFileChange} />
+        <label className="custom-file-upload">
+            <input id="file-upload" type="file" onChange={onFileChange} />
+            Seleccione un archivo
+        </label>
       {/*si ocurre un error en la subida del archivo, esta linea muestra un mensaje de error en rojo*/}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {/*si imageData tiene un valor ocurre lo siguiente */}
