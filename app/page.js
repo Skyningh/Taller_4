@@ -43,7 +43,7 @@ export default function Home() {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = imagenRedimensionada;
-    link.download = 'imagen_redimensionada.jpg';
+    link.download = 'imagen.jpg';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -58,11 +58,11 @@ export default function Home() {
         alert('Por favor, seleccione una imagen primero.');
         return;
       }
-  
+
       const formData = new FormData();
       formData.append('image', file, file.name); // Añadir el nombre del archivo
-      formData.append('ancho', ancho.toString());
-      formData.append('alto', alto.toString());
+      formData.append('ancho', ancho);
+      formData.append('alto', alto);
   
       console.log('Enviando datos:', {
         image: file.name,
@@ -76,6 +76,7 @@ export default function Home() {
       });
   
       if (!response.ok) {
+        console.log("Salio mal");
         const errorText = await response.text();
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
