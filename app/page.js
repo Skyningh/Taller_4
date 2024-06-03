@@ -2,12 +2,15 @@
 import { useState } from "react";
 import './globals.css';
 
-//Se definen las varibles con el useState, para actualizar constantemente el estado de cada variable
+
+// Se definen las variables con el useState, para actualizar constantemente el estado de cada variable
 export default function Home() {
+  
   const [file, setFile] = useState(null);
   const [ancho, setWidth] = useState('');
   const [alto, setHeight] = useState('');
   const [previewUrl, setPreview] = useState('');
+  const [imagenRedimensionada, setImagenRedimensionada] = useState(''); // Declaración del estado
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,18 +19,18 @@ export default function Home() {
       return;
     }
   };
-  
-  //Funciones para prevenir errores y caídas
-const handleFileSubmit = (e) => {
+
+  // Funciones para prevenir errores y caídas
+  const handleFileSubmit = (e) => {
     e.preventDefault();
   };
 
-const handleSizeSubmit = (e) => {
+  const handleSizeSubmit = (e) => {
     e.preventDefault();
     console.log("Ancho:", ancho, "Alto:", alto);
-};
+  };
 
-//SUBIR EL ARCHIVO
+  // SUBIR EL ARCHIVO
   const handleImage = (e) => {
     const file = e.target.files[0];
     setFile(file);
@@ -36,23 +39,68 @@ const handleSizeSubmit = (e) => {
     }
   };
 
-  //DESCARGAR LA IMAGEN
+  // DESCARGAR LA IMAGEN
   const handleDownload = () => {
-    if (previewUrl) {
-      const link = document.createElement('a');
-      link.href = previewUrl;
-      link.setAttribute('download', 'imagen');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    const link = document.createElement('a');
+    link.href = imagenRedimensionada;
+    link.download = 'imagen_redimensionada.jpg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };  
+  
+    // Función que llama a la "api" donde está el método para redimensionar la imagen.
+  // Funciona "enviando una solicitud", donde mandamos la imagen y sus dimensiones y "nos responden" 
+  // con la imagen redimensionada 
+  const handleImageManipulation = async () => {
+    try {
+      if (!file) {
+        alert('Por favor, seleccione una imagen primero.');
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append('image', file, file.name); // Añadir el nombre del archivo
+      formData.append('ancho', ancho.toString());
+      formData.append('alto', alto.toString());
+  
+      console.log('Enviando datos:', {
+        image: file.name,
+        ancho: ancho,
+        alto: alto
+      });
+  
+      const response = await fetch('/api/manipular_imagen', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage += `, message: ${errorJson.error}`;
+        } catch {
+          errorMessage += `, message: ${errorText}`;
+        }
+        throw new Error(errorMessage);
+      }
+  
+      const blob = await response.blob();
+      const imagenRedimensionadaUrl = URL.createObjectURL(blob);
+      setImagenRedimensionada(imagenRedimensionadaUrl);
+    } catch (error) {
+      console.error('Error al llamar a la API:', error);
+      alert(error.message);
     }
   };
-
+  
   return (
 
     <div className="container">
       <h1>Conversor de imágenes bacano :D </h1>
-    {/* Caja para seleccionar archivo */}
+      {/* Caja para seleccionar archivo */}
       <form onSubmit={handleFileSubmit}>
         <div className="form-section">
           <label className="custom-file-upload">
@@ -60,10 +108,12 @@ const handleSizeSubmit = (e) => {
             Seleccione un archivo
           </label>
         </div>
-        {/* <button type="submit" className="submit-button">Enviar Archivo</button> */}
       </form>
 
-      <form onSubmit={handleSizeSubmit}> {/*onSubmit se usa para especificar una función que se ejecutará cuando se envíe un formulario*//*handleSizeSubmit es una avriable en la usaremos para manejar eventos del formulario  */}
+      <form onSubmit={(e) => {
+        e.preventDefault(); // Evita el comportamiento predeterminado de enviar el formulario
+        handleImageManipulation(); // Llama a la función handleImageManipulation cuando se envía el formulario
+      }}>
         <div className="form-section">
           <div className="input-container">
             <label htmlFor="ancho">Anchura:</label>
@@ -94,13 +144,13 @@ const handleSizeSubmit = (e) => {
       <div className="preview-section">
         <p>Anchura: {ancho} px</p>
         <p>Altura: {alto} px</p>
-        {previewUrl && (
-          <div>
-            <img src={previewUrl} alt="Preview" style={{ width: ancho, height: alto }} />
-            <button onClick={handleDownload}>Descargar imagen</button>
-          </div>
-        )}
-      </div>
+        {imagenRedimensionada && (
+        <div>
+          <img src={imagenRedimensionada} alt="Imagen Redimensionada" />
+          <button onClick={handleDownload}>Descargar imagen</button>
+        </div>
+      )}
+      </div> 
     </div>
   );
 }
