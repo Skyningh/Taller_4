@@ -76,7 +76,6 @@ export default function Home() {
       });
   
       if (!response.ok) {
-        console.log("Salio mal");
         const errorText = await response.text();
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
