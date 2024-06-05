@@ -1,156 +1,89 @@
 "use client"
 import { useState } from "react";
 import './globals.css';
-
-
-// Se definen las variables con el useState, para actualizar constantemente el estado de cada variable
+import useImageUploader from "./useImageUploader";
 export default function Home() {
   
-  const [file, setFile] = useState(null);
-  const [ancho, setWidth] = useState('');
-  const [alto, setHeight] = useState('');
-  const [previewUrl, setPreview] = useState('');
-  const [imagenRedimensionada, setImagenRedimensionada] = useState(''); // Declaración del estado
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!file) {
-      alert('Por favor seleccione un archivo para subir');
-      return;
-    }
-  };
-
-  // Funciones para prevenir errores y caídas
-  const handleFileSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  const handleSizeSubmit = (e) => {
-    e.preventDefault();
-    console.log("Ancho:", ancho, "Alto:", alto);
-  };
-
-  // SUBIR EL ARCHIVO
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  // DESCARGAR LA IMAGEN
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = imagenRedimensionada;
-    link.download = 'imagen.jpg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };  
-  
-    // Función que llama a la "api" donde está el método para redimensionar la imagen.
-  // Funciona "enviando una solicitud", donde mandamos la imagen y sus dimensiones y "nos responden" 
-  // con la imagen redimensionada 
-  const handleImageManipulation = async () => {
+  const { imageData, handleImageUpload } = useImageUploader();
+  const [error, setError] = useState(null);
+  const [imageDimensions, setImageDimensions] = useState({ ancho: 0, alto: 0 });
+  const [imagenRedimensionada, setImagenRedimensionada] = useState(null);
+  //esta funcion se ejecuta cuando el usuario elige una imagen en el input
+  const onFileChange = async (event) => {
+    //obtiene el archivo seleccionado
+    const file = event.target.files[0];
     try {
-      if (!file) {
-        alert('Por favor, seleccione una imagen primero.');
-        return;
-      }
+      //await handleImageUpload(file) llama a handleImageUpload y espera a que la promesa se cumpla
+      const dataUrl = await handleImageUpload(file);
+      //creamos un objeto Image para poder obtener sus dimensiones
+      const img =new Image();
+      img.onload = () => {
+        setImageDimensions({ancho: img.width, alto: img.height})
+      };
+      img.src=dataUrl;
+    //si hay un error durante la subida, se actualiza el estado a error. 
+    } catch (err) {
+      setError(err);
+    }
+  
+  };
 
-      const formData = new FormData();
-      formData.append('image', file, file.name); // Añadir el nombre del archivo
-      formData.append('ancho', ancho);
-      formData.append('alto', alto);
-  
-      console.log('Enviando datos:', {
-        image: file.name,
-        ancho: ancho,
-        alto: alto
-      });
-  
-      const response = await fetch('/api/manipular_imagen', {
+  const modificarDimensiones = async () => {
+    try {
+      //Llamamos a la api
+      const response = await fetch('/api/modificaDimensiones', {
         method: 'POST',
-        body: formData,
+        //creamos un json que se enviará a la api con las dimensiones que querramos, y la imagen subida
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          ancho: 700, 
+          alto: 700, 
+          imagenURL: imageData 
+        })
       });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorMessage = `HTTP error! status: ${response.status}`;
-        try {
-          const errorJson = JSON.parse(errorText);
-          errorMessage += `, message: ${errorJson.error}`;
-        } catch {
-          errorMessage += `, message: ${errorText}`;
-        }
-        throw new Error(errorMessage);
-      }
-  
-      const blob = await response.blob();
-      const imagenRedimensionadaUrl = URL.createObjectURL(blob);
-      setImagenRedimensionada(imagenRedimensionadaUrl);
-    } catch (error) {
-      console.error('Error al llamar a la API:', error);
-      alert(error.message);
+      //esperamos la respuesta de la api, en json
+      const data = await response.json();
+      setImagenRedimensionada(data.imagenRedimensionada)
+    } catch (err) {
+      console.error('Error:', err);
+      setError(typeof err === 'string' ? err : (err.message || 'Error al redimensionar la imagen'));
     }
   };
-  
-  return (
 
+//me dio paja colocar lo del css (no tenia idea como)
+
+  return (
     <div className="container">
       <h1>Conversor de imágenes bacano :D </h1>
-      {/* Caja para seleccionar archivo */}
-      <form onSubmit={handleFileSubmit}>
-        <div className="form-section">
-          <label className="custom-file-upload">
-            <input id="file-upload" type="file" onChange={handleImage} />
+        <label className="custom-file-upload">
+            <input id="file-upload" type="file" onChange={onFileChange} />
             Seleccione un archivo
-          </label>
-        </div>
-      </form>
+        </label>
+      {/*si ocurre un error en la subida del archivo, esta linea muestra un mensaje de error en rojo*/}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <button onClick={modificarDimensiones}>
+            Cambiar dimensiones
+      </button>
 
-      <form onSubmit={(e) => {
-        e.preventDefault(); // Evita el comportamiento predeterminado de enviar el formulario
-        handleImageManipulation(); // Llama a la función handleImageManipulation cuando se envía el formulario
-      }}>
-        <div className="form-section">
-          <div className="input-container">
-            <label htmlFor="ancho">Anchura:</label>
-            <input
-              id="ancho"
-              type="number"
-              value={ancho}
-              onChange={(e) => {
-                setWidth(Number(e.target.value));
-              }}
-            />
-          </div>
-          <div className="input-container">
-            <label htmlFor="alto">Altura:</label>
-            <input
-              id="alto"
-              type="number"
-              value={alto}
-              onChange={(e) => {
-                setHeight(Number(e.target.value));
-              }}
-            />
-          </div>
-        </div>
-        <button type="submit" className="submit-button">Enviar Dimensiones</button>
-      </form>
-
-      <div className="preview-section">
-        <p>Anchura: {ancho} px</p>
-        <p>Altura: {alto} px</p>
-        {imagenRedimensionada && (
+      {/*si imageData tiene un valor ocurre lo siguiente */}
+      {imageData && (
         <div>
-          <img src={imagenRedimensionada} alt="Imagen Redimensionada" />
-          <button onClick={handleDownload}>Descargar imagen</button>
+          <h3>Preview:</h3>
+          {/*Para mostrarlo en sus valores originales tendriamos que quitar "style={{ maxWidth: '256px'}}" */}
+          <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
+          <p>Ancho: {imageDimensions.ancho}px</p>
+          <p>Alto: {imageDimensions.alto}px</p>
         </div>
       )}
-      </div> 
+
+      {imagenRedimensionada && (
+        <div>
+          <h3>Imagen Redimensionada:</h3>
+          {/*Para mostrarlo en sus valores originales tendriamos que quitar "style={{ maxWidth: '256px'}}" */}
+          <img src={imagenRedimensionada} alt="Redimensionada" />
+        </div>
+      )}
+
     </div>
   );
 }
