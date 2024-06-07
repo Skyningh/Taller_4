@@ -3,6 +3,7 @@ import { useState } from "react";
 import './globals.css';
 import useImageUploader from "./useImageUploader";
 
+
 export default function Home() {
   const { imageData, handleImageUpload } = useImageUploader();
   const [error, setError] = useState(null);
