@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './globals.css';
 import useImageUploader from "./useImageUploader";
 
@@ -12,6 +12,48 @@ export default function Home() {
   const [heightInput, setHeightInput] = useState(0);
   const [nuevoFormato, setNuevoFormato] = useState('jpeg');
   const [imagenConvertida, setImagenConvertida] = useState(null);
+
+
+  //Aqui hay un code con el dropzone para arrastrar archivos
+  useEffect(() => {
+    const dropZone = document.getElementById('drop-zone');
+
+    const handleDragOver = (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    };
+
+    const handleDragLeave = (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+    };
+
+    const handleDrop = (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      handleFiles(files);
+    };
+
+    dropZone.addEventListener('dragover', handleDragOver);
+    dropZone.addEventListener('dragleave', handleDragLeave);
+    dropZone.addEventListener('drop', handleDrop);
+
+    return () => {
+      dropZone.removeEventListener('dragover', handleDragOver);
+      dropZone.removeEventListener('dragleave', handleDragLeave);
+      dropZone.removeEventListener('drop', handleDrop);
+    };
+  }, []);
+
+  const handleFiles = (files) => {
+    if (files.length > 0) {
+      console.log('Archivo arrastrado:', files[0]);
+      onFileChange({ target: { files } });
+    }
+  };
+
+//Aquí termina
 
   const onFileChange = async (event) => {
     const file = event.target.files[0];
@@ -67,7 +109,7 @@ export default function Home() {
       setError(err.message || 'Error al convertir el formato de la imagen');
     }
   };
-//esta funcion la encontre en todos lados para descargar, creo que es como generica
+
   const descargarImagen = (url, formato) => {
     const link = document.createElement('a');
     link.href = url;
@@ -77,91 +119,95 @@ export default function Home() {
     document.body.removeChild(link);
   };
 
-  //aqui empieza el codigo en si, lo anterior solo eran funciones
   return (
-      <div className="body">
+    <div className="body">
+      <div className="titulo">
+        <h1>El mejor conversor de imágenes</h1>
+      </div>
 
-        <div className="container1">
-          <div className="box">
-            <h1>El mejor conversor de imágenes</h1>
-            <label className="custom-file-upload">
+      <div className="container1">
+        <div className="box">
+          <label className="custom-file-upload">
             <input id="file-upload" type="file" onChange={onFileChange} />
             Seleccione un archivo
-            </label>
+          </label>
+        </div>
+        <div className="box">
+          <div id="drop-zone" className="drop-zone">
+            Arrastre y suelte su archivo aquí
           </div>
-
-          <div>
-
-            <label>Anchura:</label>
-            <input
-              type="number"
-              value={widthInput}
-              onChange={(e) => setWidthInput(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Altura:</label>
-            <input
-              type="number"
-              value={heightInput}
-              onChange={(e) => setHeightInput(e.target.value)}
-            />
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          <button onClick={modificarDimensiones}>Cambiar dimensiones</button>
-
-          </div>
-          <h3>Elegir Formato</h3>
-
-          <select value={nuevoFormato} onChange={(e) => setNuevoFormato(e.target.value)}>
-            <option value="jpeg">JPEG</option>
-            <option value="png">PNG</option>
-            <option value="webp">WEBP</option>
-          </select>
-          <button onClick={convertirFormato}>Convertir Formato</button>
         </div>
 
+        <div>
+          <label>Anchura:</label>
+          <input
+            type="number"
+            value={widthInput}
+            onChange={(e) => setWidthInput(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Altura:</label>
+          <input
+            type="number"
+            value={heightInput}
+            onChange={(e) => setHeightInput(e.target.value)}
+          />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button onClick={modificarDimensiones}>Cambiar dimensiones</button>
+        </div>
 
-        <div class="previsualizaciones">
-          <div class="box">
-            {imageData && (
-              <div>
-                <h3>Preview:</h3>
-                <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
-                <p>Ancho: {imageDimensions.ancho}px</p>
-                <p>Alto: {imageDimensions.alto}px</p>
-              </div>
-            )}
-          </div>
+        <h3>Elegir Formato</h3>
+        <select value={nuevoFormato} onChange={(e) => setNuevoFormato(e.target.value)}>
+          <option value="jpeg">JPEG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WEBP</option>
+        </select>
+        <button onClick={convertirFormato}>Convertir Formato</button>
+      </div>
 
-          <div class="box">
-            {imagenRedimensionada && (
-              <div>
-                <h3>Imagen Redimensionada:</h3>
-                <img
-                  src={imagenRedimensionada}
-                  alt="Redimensionada"
-                  style={{ width: `${widthInput}px`, height: `${heightInput}px` }}
-                />
-                <br />
-                <button onClick={() => descargarImagen(imagenRedimensionada, 'jpeg')}>
-                  Descargar Imagen
-                </button>
-              </div>
-            )}
-          </div>
+      <div className="previsualizaciones">
+        <div className="box">
+          {imageData && (
+            <div>
+              <h3>Preview:</h3>
+              <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
+              <p>Ancho: {imageDimensions.ancho}px</p>
+              <p>Alto: {imageDimensions.alto}px</p>
+            </div>
+          )}
+        </div>
 
-          <div class="box">
-            {imagenConvertida && (
-              <div>
-                <h3>Imagen Convertida:</h3>
-                <img src={imagenConvertida} alt="Convertida" style={{ maxWidth: '256px' }} />
-                <br />
-                <button classname="a" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
-                  Descargar Imagen
-                </button>
-              </div>
-            )}
-          </div>
+        <div className="box">
+          {imagenRedimensionada && (
+            <div>
+              <h3>Imagen Redimensionada:</h3>
+              <img
+                src={imagenRedimensionada}
+                alt="Redimensionada"
+                style={{ width: `${widthInput}px`, height: `${heightInput}px` }}
+              />
+              <br />
+              <button onClick={() => descargarImagen(imagenRedimensionada, 'jpeg')}>
+                Descargar Imagen
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="box">
+          {imagenConvertida && (
+            <div>
+              <h3>Imagen Convertida:</h3>
+              <img src={imagenConvertida} alt="Convertida" style={{ maxWidth: '256px' }} />
+              <br />
+              <button classname="a" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+                Descargar Imagen
+              </button>
+            </div>
+          )}
         </div>
       </div>
-  );}
+    </div>
+  );
+}
