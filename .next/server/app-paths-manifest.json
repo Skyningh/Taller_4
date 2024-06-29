@@ -1,4 +1,5 @@
 {
   "/page": "app/page.js",
-  "/api/modificaDimensiones/route": "app/api/modificaDimensiones/route.js"
+  "/api/modificaDimensiones/route": "app/api/modificaDimensiones/route.js",
+  "/api/modificaFormato/route": "app/api/modificaFormato/route.js"
 }

@@ -2,88 +2,166 @@
 import { useState } from "react";
 import './globals.css';
 import useImageUploader from "./useImageUploader";
+
 export default function Home() {
-  
   const { imageData, handleImageUpload } = useImageUploader();
   const [error, setError] = useState(null);
   const [imageDimensions, setImageDimensions] = useState({ ancho: 0, alto: 0 });
   const [imagenRedimensionada, setImagenRedimensionada] = useState(null);
-  //esta funcion se ejecuta cuando el usuario elige una imagen en el input
+  const [widthInput, setWidthInput] = useState(0);
+  const [heightInput, setHeightInput] = useState(0);
+  const [nuevoFormato, setNuevoFormato] = useState('jpeg');
+  const [imagenConvertida, setImagenConvertida] = useState(null);
+
   const onFileChange = async (event) => {
-    //obtiene el archivo seleccionado
     const file = event.target.files[0];
     try {
-      //await handleImageUpload(file) llama a handleImageUpload y espera a que la promesa se cumpla
       const dataUrl = await handleImageUpload(file);
-      //creamos un objeto Image para poder obtener sus dimensiones
-      const img =new Image();
+      const img = new Image();
       img.onload = () => {
-        setImageDimensions({ancho: img.width, alto: img.height})
+        setImageDimensions({ ancho: img.width, alto: img.height });
       };
-      img.src=dataUrl;
-    //si hay un error durante la subida, se actualiza el estado a error. 
+      img.src = dataUrl;
     } catch (err) {
-      setError(err);
+      setError(err.message || 'Error al subir la imagen');
     }
-  
   };
 
   const modificarDimensiones = async () => {
     try {
-      //Llamamos a la api
       const response = await fetch('/api/modificaDimensiones', {
         method: 'POST',
-        //creamos un json que se enviará a la api con las dimensiones que querramos, y la imagen subida
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          ancho: 700, 
-          alto: 700, 
-          imagenURL: imageData 
-        })
+        body: JSON.stringify({
+          ancho: parseInt(widthInput),
+          alto: parseInt(heightInput),
+          imagenURL: imageData,
+        }),
       });
-      //esperamos la respuesta de la api, en json
       const data = await response.json();
-      setImagenRedimensionada(data.imagenRedimensionada)
+      setImagenRedimensionada(data.imagenRedimensionada);
     } catch (err) {
       console.error('Error:', err);
-      setError(typeof err === 'string' ? err : (err.message || 'Error al redimensionar la imagen'));
+      setError(err.message || 'Error al redimensionar la imagen');
     }
   };
 
-//me dio paja colocar lo del css (no tenia idea como)
+  const convertirFormato = async () => {
+    try {
+      const response = await fetch('/api/modificaFormato', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imagenURL: imageData,
+          nuevoFormato: nuevoFormato,
+        }),
+      });
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.details || 'Error al convertir el formato de la imagen');
+      }
+      const data = await response.json();
+      setImagenConvertida(data.imagenConvertida);
+    } catch (err) {
+      console.error('Error:', err);
+      setError(err.message || 'Error al convertir el formato de la imagen');
+    }
+  };
+//esta funcion la encontre en todos lados para descargar, creo que es como generica
+  const descargarImagen = (url, formato) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `imagen.${formato}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
+  //aqui empieza el codigo en si, lo anterior solo eran funciones
   return (
-    <div className="container">
-      <h1>Conversor de imágenes bacano :D </h1>
-        <label className="custom-file-upload">
+      <div className="body">
+
+        <div className="container1">
+          <div className="box">
+            <h1>El mejor conversor de imágenes</h1>
+            <label className="custom-file-upload">
             <input id="file-upload" type="file" onChange={onFileChange} />
             Seleccione un archivo
-        </label>
-      {/*si ocurre un error en la subida del archivo, esta linea muestra un mensaje de error en rojo*/}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={modificarDimensiones}>
-            Cambiar dimensiones
-      </button>
+            </label>
+          </div>
 
-      {/*si imageData tiene un valor ocurre lo siguiente */}
-      {imageData && (
-        <div>
-          <h3>Preview:</h3>
-          {/*Para mostrarlo en sus valores originales tendriamos que quitar "style={{ maxWidth: '256px'}}" */}
-          <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
-          <p>Ancho: {imageDimensions.ancho}px</p>
-          <p>Alto: {imageDimensions.alto}px</p>
+          <div>
+
+            <label>Anchura:</label>
+            <input
+              type="number"
+              value={widthInput}
+              onChange={(e) => setWidthInput(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Altura:</label>
+            <input
+              type="number"
+              value={heightInput}
+              onChange={(e) => setHeightInput(e.target.value)}
+            />
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <button onClick={modificarDimensiones}>Cambiar dimensiones</button>
+
+          </div>
+          <h3>Elegir Formato</h3>
+
+          <select value={nuevoFormato} onChange={(e) => setNuevoFormato(e.target.value)}>
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WEBP</option>
+          </select>
+          <button onClick={convertirFormato}>Convertir Formato</button>
         </div>
-      )}
 
-      {imagenRedimensionada && (
-        <div>
-          <h3>Imagen Redimensionada:</h3>
-          {/*Para mostrarlo en sus valores originales tendriamos que quitar "style={{ maxWidth: '256px'}}" */}
-          <img src={imagenRedimensionada} alt="Redimensionada" />
+
+        <div class="previsualizaciones">
+          <div class="box">
+            {imageData && (
+              <div>
+                <h3>Preview:</h3>
+                <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
+                <p>Ancho: {imageDimensions.ancho}px</p>
+                <p>Alto: {imageDimensions.alto}px</p>
+              </div>
+            )}
+          </div>
+
+          <div class="box">
+            {imagenRedimensionada && (
+              <div>
+                <h3>Imagen Redimensionada:</h3>
+                <img
+                  src={imagenRedimensionada}
+                  alt="Redimensionada"
+                  style={{ width: `${widthInput}px`, height: `${heightInput}px` }}
+                />
+                <br />
+                <button onClick={() => descargarImagen(imagenRedimensionada, 'jpeg')}>
+                  Descargar Imagen
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div class="box">
+            {imagenConvertida && (
+              <div>
+                <h3>Imagen Convertida:</h3>
+                <img src={imagenConvertida} alt="Convertida" style={{ maxWidth: '256px' }} />
+                <br />
+                <button classname="a" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+                  Descargar Imagen
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-
-    </div>
-  );
-}
+      </div>
+  );}

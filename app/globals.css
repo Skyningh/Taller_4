@@ -1,11 +1,29 @@
 body {
-  background-image: linear-gradient(red, white);
-  height: 100vh;
+  background-image: linear-gradient(#b3dad8, rgb(255, 255, 255));
+  height: 100vh; /* Opcional: mantener height si se desea que el gradiente termine en el viewport */
+  background-attachment: fixed; /* Fija el fondo en su posición */
   margin: 0;
 }
 
-.container{
+.titulo{
+  text-align: center; /* Centra el título */
+  margin-bottom: 20px; /* Espacio inferior */
+}
+.container1 {
+  gap: 20px; /* Espacio entre los elementos */
   font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 50px;
+  background-color: rgba(255, 255, 255, 0.5); /* Color azul claro con 50% de opacidad */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.container1 label {
+  display: block; /* Mostrar como bloque */
+  margin-bottom: 5px; /* Espacio inferior */
 }
 
 /*Caja para seleccionar archivo*/
@@ -17,8 +35,6 @@ body {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 20px;
 }
 
 .custom-file-upload:hover { /*para cuando pase el cursos por encima*/
@@ -61,4 +77,60 @@ body {
 
 .submit-button:hover {
   background-color: #0056b3; 
+}
+
+
+button {
+  border: none;
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  background-color: #488aec;
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+  align-items: center;
+  border-radius: 0.5rem;
+  user-select: none;
+  gap: 0.75rem;
+  box-shadow: 0 4px 6px -1px #488aec31, 0 2px 4px -1px #488aec17;
+  transition: all .6s ease;
+}
+
+button:hover {
+  box-shadow: 0 10px 15px -3px #488aec4f, 0 4px 6px -2px #488aec17;
+}
+
+button:focus,button:active {
+  opacity: .85;
+  box-shadow: none;
+}
+
+button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.previsualizaciones {
+  display: flex; /* Utilizamos flexbox en el contenedor */
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre los elementos */
+  font-family: Arial, sans-serif;
+  max-width: 1500px;
+  margin: 100px auto;
+  padding: 50px;
+  border-radius: 8px;
+}
+
+.box {
+  display: flex; /* Utilizamos flexbox en el contenedor */
+  flex-wrap: wrap;
+  gap: 30px; /* Espacio entre los elementos */
+  max-width: 100%; /* Ancho máximo del contenedor igual al tamaño de la imagen */
+  max-height: 100%; /* Altura máxima del contenedor igual al tamaño de la imagen */
+  margin-right: 10px; /* Margen entre cada div */
+  overflow: hidden; /* Para ocultar partes de la imagen que excedan el contenedor */
 }
