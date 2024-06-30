@@ -8,7 +8,6 @@ body {
   margin: 0;
 }
 
-
 .titulo{
   text-align: center;         /* Alineación centrada */
   margin-top: 50px;           /* Espacio superior */
@@ -18,25 +17,32 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto suave */
 }
 
-.container1 {
+.container {
+  background-image: url('/home/esperancita/Escritorio/fondo.jpg');
+  display: flex;
+  flex-direction: row;
   gap: 20px; /* Espacio entre los elementos */
   font-family: Arial, sans-serif;
-  max-width: 800px;
+  max-width: 1500px;
   margin: 100px auto;
-  padding: 50px;
   background-color: rgba(255, 255, 255, 0.5); /* Color azul claro con 50% de opacidad */
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
-.container1 label {
+.container label {
   display: block; /* Mostrar como bloque */
   margin-bottom: 5px; /* Espacio inferior */
 }
 
-.box {
+.boxSeleccionImagen {
   margin-bottom: 20px;
+  flex: 1 1; /* Optional: Ensures that all boxes take equal space */
+}
+
+.boxCambioImagen {
+  margin-bottom: 20px;
+  flex: 1 1; /* Optional: Ensures that all boxes take equal space */
 }
 
 .custom-file-upload {
@@ -49,7 +55,8 @@ body {
   font-family: 'Arial', sans-serif;
   text-align: center;
 }
-/*Zona para subir archivos arrastrandolos*/
+
+/* Zona para subir archivos arrastrándolos */
 .drop-zone {
   width: 300px;
   height: 100px;
@@ -68,26 +75,27 @@ body {
   background-color: #e6f7ff;
 }
 
-/*Caja para seleccionar archivo*/
+/* Caja para seleccionar archivo */
 .custom-file-upload {
   display: inline-block;
-  background-color: #0f0;
+  background-color: rgb(97, 68, 132);
   color: white;
   border: none;
-  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  width: 240px;
+  height: 20px;
+  margin-left: 200px;
+  margin-top: 20px;
 }
 
-.custom-file-upload:hover { /*para cuando pase el cursos por encima*/
-  background-color: #090;
+.custom-file-upload:hover {
+  background-color: rgb(55, 42, 70);
 }
 
-#file-upload { /* para ocultar el selector de archivos nativo, si lo quitamos aparece el nombre del archivo que subamos y el botón genérico */
+#file-upload {
   display: none;
 }
-/*Fin caja seleccionar archivo*/
-
 
 .input-container {
   display: flex;
@@ -121,7 +129,6 @@ body {
   background-color: #0056b3; 
 }
 
-
 button {
   border: none;
   display: flex;
@@ -148,7 +155,7 @@ button:hover {
   box-shadow: 0 10px 15px -3px #488aec4f, 0 4px 6px -2px #488aec17;
 }
 
-button:focus,button:active {
+button:focus, button:active {
   opacity: .85;
   box-shadow: none;
 }
@@ -159,9 +166,9 @@ button svg {
 }
 
 .previsualizaciones {
-  display: flex; /* Utilizamos flexbox en el contenedor */
+  display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Espacio entre los elementos */
+  gap: 20px;
   font-family: Arial, sans-serif;
   max-width: 1500px;
   margin: 100px auto;
@@ -170,12 +177,12 @@ button svg {
 }
 
 .box {
-  display: flex; /* Utilizamos flexbox en el contenedor */
+  display: flex;
   flex-wrap: wrap;
-  gap: 30px; /* Espacio entre los elementos */
-  max-width: 100%; /* Ancho máximo del contenedor igual al tamaño de la imagen */
-  max-height: 100%; /* Altura máxima del contenedor igual al tamaño de la imagen */
-  margin-right: 10px; /* Margen entre cada div */
-  overflow: hidden; /* Para ocultar partes de la imagen que excedan el contenedor */
+  gap: 30px;
+  max-width: 100%;
+  max-height: 100%;
+  margin-right: 10px;
+  overflow: hidden;
 }
 

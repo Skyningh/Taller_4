@@ -121,23 +121,38 @@ export default function Home() {
 
   return (
     <div className="body">
+
       <div className="titulo">
         <h1>El mejor conversor de imágenes</h1>
       </div>
 
-      <div className="container1">
-        <div className="box">
-          <label className="custom-file-upload">
-            <input id="file-upload" type="file" onChange={onFileChange} />
+
+
+      <div className="container" backgroundImage={"https//es.vecteezy.com/arte-vectorial/7937895-moderno-low-poly-light-blue-triangle-shapes-background"}>
+
+        <div className="boxSeleccionImagen">
+           <label className="custom-file-upload">
+              <input id="file-upload" type="file" onChange={onFileChange} />
             Seleccione un archivo
-          </label>
-        </div>
-        <div className="box">
+           </label>
           <div id="drop-zone" className="drop-zone">
             Arrastre y suelte su archivo aquí
           </div>
-        </div>
 
+          <div>
+          {imageData && (
+            <div>
+              <h3>Preview:</h3>
+              <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
+              <p>Ancho: {imageDimensions.ancho}px</p>
+              <p>Alto: {imageDimensions.alto}px</p>
+            </div>
+          )}
+        </div>
+      </div>{/*Container */}
+
+
+      <div className="boxCambioImagen">
         <div>
           <label>Anchura:</label>
           <input
@@ -154,7 +169,7 @@ export default function Home() {
             onChange={(e) => setHeightInput(e.target.value)}
           />
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button onClick={modificarDimensiones}>Cambiar dimensiones</button>
+        <button className="custom-file-upload" onClick={modificarDimensiones}>Cambiar dimensiones</button>
         </div>
 
         <h3>Elegir Formato</h3>
@@ -164,50 +179,24 @@ export default function Home() {
           <option value="webp">WEBP</option>
         </select>
         <button onClick={convertirFormato}>Convertir Formato</button>
-      </div>
 
-      <div className="previsualizaciones">
-        <div className="box">
-          {imageData && (
-            <div>
-              <h3>Preview:</h3>
-              <img src={imageData} alt="Uploaded" style={{ maxWidth: '256px' }} />
-              <p>Ancho: {imageDimensions.ancho}px</p>
-              <p>Alto: {imageDimensions.alto}px</p>
-            </div>
-          )}
-        </div>
-
-        <div className="box">
-          {imagenRedimensionada && (
-            <div>
-              <h3>Imagen Redimensionada:</h3>
-              <img
-                src={imagenRedimensionada}
-                alt="Redimensionada"
-                style={{ width: `${widthInput}px`, height: `${heightInput}px` }}
-              />
-              <br />
-              <button onClick={() => descargarImagen(imagenRedimensionada, 'jpeg')}>
-                Descargar Imagen
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="box">
+        <div>
           {imagenConvertida && (
             <div>
               <h3>Imagen Convertida:</h3>
               <img src={imagenConvertida} alt="Convertida" style={{ maxWidth: '256px' }} />
               <br />
-              <button classname="a" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+              <button classname="custom-file-upload" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
                 Descargar Imagen
               </button>
             </div>
           )}
         </div>
-      </div>
+
+      </div> {/*Container2*/}
+
+      
+      </div>      
     </div>
   );
 }
