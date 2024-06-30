@@ -1,4 +1,5 @@
 {
-  "/not-found": "app/not-found.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/api/modificaFormato/route": "app/api/modificaFormato/route.js",
+  "/api/modificaDimensiones/route": "app/api/modificaDimensiones/route.js"
 }

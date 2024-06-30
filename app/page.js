@@ -6,11 +6,11 @@ import useImageUploader from "./useImageUploader";
 export default function Home() {
   const { imageData, handleImageUpload } = useImageUploader();
   const [error, setError] = useState(null);
-  const [imageDimensions, setImageDimensions] = useState({ ancho: 0, alto: 0 });
+  const [imageDimensions, setImageDimensions] = useState({ ancho:"", alto: "" });
   const [imagenRedimensionada, setImagenRedimensionada] = useState(null);
-  const [widthInput, setWidthInput] = useState(0);
-  const [heightInput, setHeightInput] = useState(0);
-  const [nuevoFormato, setNuevoFormato] = useState('jpeg');
+  const [widthInput, setWidthInput] = useState();
+  const [heightInput, setHeightInput] = useState();
+  const [nuevoFormato, setNuevoFormato] = useState(' ');
   const [imagenConvertida, setImagenConvertida] = useState(null);
 
 
@@ -62,6 +62,7 @@ export default function Home() {
       const img = new Image();
       img.onload = () => {
         setImageDimensions({ ancho: img.width, alto: img.height });
+
       };
       img.src = dataUrl;
     } catch (err) {
@@ -128,7 +129,7 @@ export default function Home() {
 
 
 
-      <div className="container" backgroundImage={"https//es.vecteezy.com/arte-vectorial/7937895-moderno-low-poly-light-blue-triangle-shapes-background"}>
+      <div className="container" backgroundImage={"/fondo.jpg"}>
 
         <div className="boxSeleccionImagen">
            <label className="custom-file-upload">
@@ -174,11 +175,12 @@ export default function Home() {
 
         <h3>Elegir Formato</h3>
         <select value={nuevoFormato} onChange={(e) => setNuevoFormato(e.target.value)}>
+          <option value=" "> </option>
           <option value="jpeg">JPEG</option>
           <option value="png">PNG</option>
           <option value="webp">WEBP</option>
         </select>
-        <button onClick={convertirFormato}>Convertir Formato</button>
+        <button onClick={() => { convertirFormato(); modificarDimensiones(); }}>Convertir Formato</button>
 
         <div>
           {imagenConvertida && (
@@ -187,6 +189,19 @@ export default function Home() {
               <img src={imagenConvertida} alt="Convertida" style={{ maxWidth: '256px' }} />
               <br />
               <button classname="custom-file-upload" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+                Descargar Imagen
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div>
+          {imagenRedimensionada && (
+            <div>
+              <h3>Imagen Redimensionada:</h3>
+              <img src={imagenRedimensionada} alt="Redimensionada" style={{ maxWidth: '900px' }} />
+              <br />
+              <button classname="custom-file-upload" onClick={() => descargarImagen(imagenRedimensionada)}>
                 Descargar Imagen
               </button>
             </div>

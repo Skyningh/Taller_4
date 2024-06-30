@@ -2,10 +2,11 @@
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[11].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[11].oneOf[12].use[3]!./app/globals.css ***!
   \*************************************************************************************************************************************************************************************************************************************************************/
 body {
-  background-image: linear-gradient(#b3dad8, rgb(255, 255, 255));
+  background-image: url(/_next/static/media/fondo.aa82a0b3.jpg)  ;
   height: 100vh; /* Opcional: mantener height si se desea que el gradiente termine en el viewport */
   background-attachment: fixed; /* Fija el fondo en su posición */
   margin: 0;
+
 }
 
 .titulo{
@@ -18,14 +19,13 @@ body {
 }
 
 .container {
-  background-image: url('/home/esperancita/Escritorio/fondo.jpg');
+  background-size: cover; /* Ajusta la imagen para que cubra todo el div */
   display: flex;
   flex-direction: row;
   gap: 20px; /* Espacio entre los elementos */
   font-family: Arial, sans-serif;
   max-width: 1500px;
-  margin: 100px auto;
-  background-color: rgba(255, 255, 255, 0.5); /* Color azul claro con 50% de opacidad */
+  margin: 40px auto;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
