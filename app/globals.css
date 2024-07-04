@@ -1,35 +1,100 @@
 body {
-  background-image: linear-gradient(red, white);
-  height: 100vh;
+  background-image: url(fondo.jpg)  ;
+  height: 100vh; /* Opcional: mantener height si se desea que el gradiente termine en el viewport */
+  background-attachment: fixed; /* Fija el fondo en su posición */
   margin: 0;
+
 }
 
-.container{
+.titulo{
+  text-align: center;         /* Alineación centrada */
+  margin-top: 50px;           /* Espacio superior */
+  margin-bottom: 10px;        /* Espacio inferior */
+  font-family: 'Arial', sans-serif; /* Fuente limpia y moderna */
+  letter-spacing: 2px;        /* Espaciado entre letras */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto suave */
+}
+
+.container {
+  background-size: cover; /* Ajusta la imagen para que cubra todo el div */
+  display: flex;
+  flex-direction: row;
+  gap: 20px; /* Espacio entre los elementos */
   font-family: Arial, sans-serif;
+  max-width: 1500px;
+  margin: 40px auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 }
 
-/*Caja para seleccionar archivo*/
+.container label {
+  display: block; /* Mostrar como bloque */
+  margin-bottom: 5px; /* Espacio inferior */
+}
+
+.boxSeleccionImagen {
+  margin-bottom: 20px;
+  flex: 1; /* Optional: Ensures that all boxes take equal space */
+}
+
+.boxCambioImagen {
+  
+  margin-bottom: 20px;
+  flex: 1; /* Optional: Ensures that all boxes take equal space */
+}
+
 .custom-file-upload {
   display: inline-block;
-  background-color: #0f0;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #4A90E2;
+  color: #fff;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+/* Zona para subir archivos arrastrándolos */
+.drop-zone {
+  width: 300px;
+  height: 100px;
+  border: 2px dashed #4A90E2;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4A90E2;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.drop-zone.dragover {
+  background-color: #e6f7ff;
+}
+
+/* Caja para seleccionar archivo */
+.custom-file-upload {
+  display: inline-block;
+  background-color: rgb(97, 68, 132);
   color: white;
   border: none;
-  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 20px;
+  width: 240px;
+  height: 20px;
+  margin-left: 200px;
+  margin-top: 20px;
 }
 
-.custom-file-upload:hover { /*para cuando pase el cursos por encima*/
-  background-color: #090;
+.custom-file-upload:hover {
+  background-color: rgb(55, 42, 70);
 }
 
-#file-upload { /* para ocultar el selector de archivos nativo, si lo quitamos aparece el nombre del archivo que subamos y el botón genérico */
+#file-upload {
   display: none;
 }
-/*Fin caja seleccionar archivo*/
-
 
 .input-container {
   display: flex;
@@ -61,4 +126,59 @@ body {
 
 .submit-button:hover {
   background-color: #0056b3; 
+}
+
+button {
+  border: none;
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  background-color: #488aec;
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+  align-items: center;
+  border-radius: 0.5rem;
+  user-select: none;
+  gap: 0.75rem;
+  box-shadow: 0 4px 6px -1px #488aec31, 0 2px 4px -1px #488aec17;
+  transition: all .6s ease;
+}
+
+button:hover {
+  box-shadow: 0 10px 15px -3px #488aec4f, 0 4px 6px -2px #488aec17;
+}
+
+button:focus, button:active {
+  opacity: .85;
+  box-shadow: none;
+}
+
+button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.previsualizaciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 1500px;
+  margin: 100px auto;
+  padding: 50px;
+  border-radius: 8px;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  max-width: 100%;
+  max-height: 100%;
+  margin-right: 10px;
+  overflow: hidden;
 }
