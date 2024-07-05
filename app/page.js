@@ -139,8 +139,8 @@ export default function Home() {
     <div className="body">{/*Clase para toda la página*/}
 
       <div className="titulo">
-        <h1>CONVERTÍN</h1>
-      </div>
+        <img src="conversor_martin.png" alt="Imagen Título" className="image-rendering" style={{ maxWidth: '400px',marginRight: '10px' }}/>
+      </div>  
 
       <div className="container">{/*Esta es la clase dentro de la que van los elementos*/}
 
@@ -210,7 +210,7 @@ export default function Home() {
   {imagenRedimensionada && (
     <div>
       <h3>Imagen Redimensionada:</h3>
-      <img src={imagenConvertida} alt="Redimensionada" style={{ maxWidth: '700px' }} />
+      <img src={imagenRedimensionada} alt="Redimensionada" style={{ maxWidth: '700px' }} />
       <br />
       <button id="download" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
         Descargar Imagen
