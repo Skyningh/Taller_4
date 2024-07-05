@@ -35,7 +35,9 @@ body {
 
 .boxSeleccionImagen {
   margin-bottom: 20px;
-  flex: 1; /* Optional: Ensures that all boxes take equal space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .boxCambioImagen {
@@ -67,7 +69,6 @@ body {
   color: #4A90E2;
   font-family: 'Arial', sans-serif;
   text-align: center;
-  margin-top: 20px;
 }
 
 .drop-zone.dragover {
@@ -84,7 +85,7 @@ body {
   cursor: pointer;
   width: 240px;
   height: 20px;
-  margin-left: 200px;
+  margin: 0px auto;
   margin-top: 20px;
 }
 
@@ -181,4 +182,62 @@ button svg {
   max-height: 100%;
   margin-right: 10px;
   overflow: hidden;
+}
+
+#formato {
+  width: 100px;
+  height: 30px;
+  padding: 5px; 
+  font-size: 16px; 
+  border: 2px solid; 
+  border-radius: 5px; 
+  cursor: pointer; /* cursor al pasar sobre el select */
+  margin-bottom: 5px;
+}
+
+.boxData {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+}
+
+.selectImage{
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+
+.imgOne{
+  margin: 10px;
+}
+
+.imgTwo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Centra el contenido dentro del div */
+}
+
+.imgTwo h3{
+  margin: 10px;
+  margin-top: 40px;
+}
+
+#download {
+  background-color: #0fdf20;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 700px;
+  display: inline-block; /* Asegura que el botón se alinee correctamente */
+  margin-bottom: 10px;
+}
+
+#download:hover {
+  background-color: #076e10;
 }

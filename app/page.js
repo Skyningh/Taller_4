@@ -158,13 +158,13 @@ export default function Home() {
 
           <div>
           {imageData && (
-            <div>
-              <h3>Preview:</h3>
-              <img src={imageData} alt="Uploaded" style={{ maxWidth: '700px' }} />{/*Aqui limitamos el container del preview*/}
-              <p>Ancho: {imageDimensions.ancho}px</p>
-              <p>Alto: {imageDimensions.alto}px</p>
-            </div>
-          )}
+            <div className="imgOne">
+            <h3>Preview:</h3>
+            <img src={imageData} alt="Uploaded" style={{ maxWidth: '600px' }} />{/*Aqui limitamos el container del preview*/}
+            <p>Ancho: {imageDimensions.ancho}px</p>
+            <p>Alto: {imageDimensions.alto}px</p>
+          </div>
+        )}
         </div>
       </div>{/* Fin Container 1 */}
 
@@ -208,14 +208,14 @@ export default function Home() {
 
       <div>
   {imagenRedimensionada && (
-    <div>
-      <h3>Imagen Redimensionada:</h3>
-      <img src={imagenRedimensionada} alt="Redimensionada" style={{ maxWidth: '700px' }} />
-      <br />
-      <button id="download" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
-        Descargar Imagen
-      </button>
-    </div>
+    <div class="imgTwo">
+    <h3>Imagen Redimensionada:</h3>
+    <button id="download" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+      Descargar Imagen
+    </button>
+    <img src={imagenConvertida} alt="Redimensionada" style={{ maxWidth: '900px' }} />
+    <br/>
+  </div>
   )}
 </div>
 
