@@ -146,13 +146,19 @@ export default function Home() {
 
         <div className="boxSeleccionImagen">{/*Separacion 1 del container*/}
           <div className="selectImage">
-            <label className="custom-file-upload">
-                <input id="file-upload" type="file" onChange={onFileChange} />
-              Seleccione un archivo
-            </label>
+           <input id="file-upload" type="file" onChange={onFileChange} style={{display: 'none'}} />
             <div id="drop-zone" className="drop-zone">
-              Arrastre y suelte su archivo aquí
+                  Arrastre y suelte su archivo aquí
+
+                <button className="cssbuttons-io-button" onClick={() => document.getElementById('file-upload').click()}>
+                    <svg viewBox="0 0 640 512" fill="white" height="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
+                    </svg>
+                    <span>O seleccionar</span>
+                </button>
+
             </div>
+
           </div>
 
 
@@ -178,7 +184,6 @@ export default function Home() {
             <option value="jpeg">JPEG</option>
             <option value="png">PNG</option>
             <option value="webp">WEBP</option>
-            <option value="tiff">TIFF</option>
             <option value="heic">HEIC</option>
             <option value="avif">AVIF</option>
           </select>
@@ -209,11 +214,22 @@ export default function Home() {
       <div>
   {imagenRedimensionada && (
     <div class="imgTwo">
-    <h3>Imagen Redimensionada:</h3>
-    <button id="download" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
-      Descargar Imagen
-    </button>
-    <img src={imagenConvertida} alt="Redimensionada" style={{ maxWidth: '900px' }} />
+      <h3>Imagen Redimensionada:</h3>
+      <button id="download" className="Download-button" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="16"
+          width="20"
+          viewBox="0 0 640 512"
+        >
+        <path
+        d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39V184c0-13.3-10.7-24-24-24s-24 10.7-24 24V318.1l-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z"
+        fill="white"
+        ></path>
+        </svg>
+        <span>Descargar Imagen</span>
+        </button>
+    <img src={imagenRedimensionada} style={{ maxWidth: '900px' }} />
     <br/>
   </div>
   )}

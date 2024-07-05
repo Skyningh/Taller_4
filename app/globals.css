@@ -8,8 +8,8 @@ body {
 
 .titulo{
   text-align: center;         /* Alineación centrada */
-  margin-top: 50px;           /* Espacio superior */
-  margin-bottom: 10px;        /* Espacio inferior */
+  margin-top: 0px;
+  margin-bottom: 0px;
   font-family: 'Arial', sans-serif; /* Fuente limpia y moderna */
   letter-spacing: 2px;        /* Espaciado entre letras */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto suave */
@@ -25,7 +25,7 @@ body {
   margin: 40px auto;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+  margin-top: 0px;
 }
 
 .container label {
@@ -59,11 +59,13 @@ body {
 
 /* Zona para subir archivos arrastrándolos */
 .drop-zone {
+  margin-top: 20px;
   width: 300px;
-  height: 100px;
+  height: 150px;
   border: 2px dashed #4A90E2;
   border-radius: 5px;
   display: flex;
+  flex-direction:column;
   align-items: center;
   justify-content: center;
   color: #4A90E2;
@@ -116,7 +118,7 @@ body {
 }
 
 .submit-button {
-  background-color: #007bff; 
+  background-color: rgb(120, 47, 255); 
   color: white;
   border: none;
   padding: 10px 20px;
@@ -126,7 +128,7 @@ body {
 }
 
 .submit-button:hover {
-  background-color: #0056b3; 
+  background-color:#450061; 
 }
 
 button {
@@ -241,3 +243,97 @@ button svg {
 #download:hover {
   background-color: #076e10;
 }
+
+/*Boton */
+.Download-button {
+  display:s flex;
+  align-items: center;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 17px;
+  padding: 12px 20px;
+  color: white;
+  background: rgb(103, 92, 156);
+  border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em rgba(59, 48, 78, 0.527);
+  letter-spacing: 0.05em;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.Download-button svg {
+  margin-right: 8px;
+  width: 25px;
+}
+
+.Download-button:hover {
+  box-shadow: 0 0.5em 1.5em -0.5em rgba(88, 71, 116, 0.627);
+}
+
+.Download-button:active {
+  box-shadow: 0 0.3em 1em -0.5em rgba(88, 71, 116, 0.627);
+}
+
+.Download-button::before {
+  content: "";
+  width: 4px;
+  height: 40%;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  left: 0;
+  transition: all 0.2s;
+}
+
+.Download-button::after {
+  content: "";
+  width: 4px;
+  height: 40%;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  right: 0;
+  transition: all 0.2s;
+}
+
+.Download-button:hover::before,
+.Download-button:hover::after {
+  height: 60%;
+}
+
+.cssbuttons-io-button {
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 10px;
+  padding: 0.8em 1.5em 0.8em 1.2em;
+  color: white;
+  background: #ad5389;
+  background: linear-gradient(0deg, rgb(120, 47, 255) 0%, rgb(185, 132, 255) 100%);
+  border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em rgb(184, 146, 255);
+  letter-spacing: 0.05em;
+  border-radius: 20em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cssbuttons-io-button svg {
+  margin-right: 8px;
+  height: 1em;
+}
+
+.cssbuttons-io-button:hover {
+  box-shadow: 0 0.5em 1.5em -0.5em rgb(149, 91, 255);
+}
+
+.cssbuttons-io-button:active {
+  box-shadow: 0 0.3em 1em -0.5em rgb(160, 109, 255);
+}
+
