@@ -139,25 +139,28 @@ export default function Home() {
     <div className="body">{/*Clase para toda la página*/}
 
       <div className="titulo">
-        <h1>El mejor conversor de imágenes</h1>
+        <h1>CONVERTÍN</h1>
       </div>
 
-      <div className="container" backgroundImage={"/fondo.jpg"}>{/*Esta es la clase dentro de la que van los elementos*/}
+      <div className="container">{/*Esta es la clase dentro de la que van los elementos*/}
 
         <div className="boxSeleccionImagen">{/*Separacion 1 del container*/}
-           <label className="custom-file-upload">
-              <input id="file-upload" type="file" onChange={onFileChange} />
-            Seleccione un archivo
-           </label>
-          <div id="drop-zone" className="drop-zone">
-            Arrastre y suelte su archivo aquí
+          <div className="selectImage">
+            <label className="custom-file-upload">
+                <input id="file-upload" type="file" onChange={onFileChange} />
+              Seleccione un archivo
+            </label>
+            <div id="drop-zone" className="drop-zone">
+              Arrastre y suelte su archivo aquí
+            </div>
           </div>
+
 
           <div>
           {imageData && (
             <div>
               <h3>Preview:</h3>
-              <img src={imageData} alt="Uploaded" style={{ maxWidth: '600px' }} />{/*Aqui limitamos el container del preview*/}
+              <img src={imageData} alt="Uploaded" style={{ maxWidth: '700px' }} />{/*Aqui limitamos el container del preview*/}
               <p>Ancho: {imageDimensions.ancho}px</p>
               <p>Alto: {imageDimensions.alto}px</p>
             </div>
@@ -165,47 +168,56 @@ export default function Home() {
         </div>
       </div>{/* Fin Container 1 */}
 
+      
 
       <div className="boxCambioImagen">{/*Separacion 2 del container*/}
-        <div>
-          <label>Anchura:</label>
-          <input
-            type="number"
-            value={widthInput}
-            onChange={(e) => setWidthInput(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Altura:</label>
-          <input
-            type="number"
-            value={heightInput}
-            onChange={(e) => setHeightInput(e.target.value)}
-          />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
-
+      
+      <div className="boxData">
         <h3>Elegir Formato</h3>
-        <select value={nuevoFormato} onChange={(e) => setNuevoFormato(e.target.value)}>
-          <option value="jpeg">JPEG</option>
-          <option value="png">PNG</option>
-          <option value="webp">WEBP</option>
-        </select>
-        <button onClick={procesarImagen}>Enviar</button>
+          <select id="formato" value={nuevoFormato} onChange={(e) => setNuevoFormato(e.target.value)}>
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WEBP</option>
+            <option value="tiff">TIFF</option>
+            <option value="heic">HEIC</option>
+            <option value="avif">AVIF</option>
+          </select>
+
+          <div className="input-container">
+            <label>Anchura:</label>
+            <input
+              type="number"
+              placeholder={imageDimensions.ancho}
+              value={widthInput}
+              onChange={(e) => setWidthInput(e.target.value)}
+            />
+          </div>
+          <div className="input-container">
+            <label>Altura:ㅤ</label>
+            <input
+              type="number"
+              placeholder={imageDimensions.alto}
+              value={heightInput}
+              onChange={(e) => setHeightInput(e.target.value)}
+            />
+          {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
+          </div>
+          <button className="submit-button" onClick={procesarImagen}>ENVIAR</button>
+      </div>
 
 
-        <div>
-          {imagenRedimensionada && (
-            <div>
-              <h3>Imagen Redimensionada:</h3>
-              <img src={imagenConvertida} alt="Redimensionada" style={{ maxWidth: '900px' }} />
-              <br />
-              <button classname="custom-file-upload" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
-                Descargar Imagen
-              </button>
-            </div>
-          )}
-        </div>
+      <div>
+  {imagenRedimensionada && (
+    <div>
+      <h3>Imagen Redimensionada:</h3>
+      <img src={imagenConvertida} alt="Redimensionada" style={{ maxWidth: '700px' }} />
+      <br />
+      <button id="download" onClick={() => descargarImagen(imagenConvertida, nuevoFormato)}>
+        Descargar Imagen
+      </button>
+    </div>
+  )}
+</div>
 
       </div> {/*Fin Container2*/}
 
